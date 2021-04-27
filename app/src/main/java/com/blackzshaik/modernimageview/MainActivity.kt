@@ -5,17 +5,21 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Handler
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.MotionEvent
+import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import java.io.File
+import kotlin.math.sqrt
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,6 +29,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var zoomView:ImageView
 
+    private lateinit var zoomViewHolder:ConstraintLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         fullScreenImageView = findViewById(R.id.fullScreenImageView)
         emptyView = findViewById(R.id.emptyView)
         zoomView = findViewById(R.id.zoomView)
+        zoomViewHolder = findViewById(R.id.zoomViewHolder)
 
         checkStoragePermission()
     }
@@ -127,6 +134,14 @@ class MainActivity : AppCompatActivity() {
     var activePointerIdB = -1
     var initalScaleFactor = 1.25f
 
+    var initialX:Float? = null
+    var initialY:Float? = null
+
+    var initialC: Double? = null
+
+    var scaleFactor = 0.25F
+
+
     @SuppressLint("ClickableViewAccessibility")
     val  onThumbnailMultiTouch =
     fun (bmp:Bitmap){
@@ -134,9 +149,15 @@ class MainActivity : AppCompatActivity() {
         zoomView.visibility = View.VISIBLE
         zoomView.scaleX = initalScaleFactor
         zoomView.scaleY = initalScaleFactor
-        zoomView.setOnTouchListener { v, event ->
+        zoomViewHolder.visibility = View.VISIBLE
+        zoomViewHolder.setOnTouchListener { v, event ->
+
 
             if (event.action == MotionEvent.ACTION_UP){
+                zoomView.scaleX = 1.0F
+                zoomView.scaleY = 1.0F
+                initialX = null
+                initialY = null
                 onBackPressed()
             }
 
@@ -146,8 +167,8 @@ class MainActivity : AppCompatActivity() {
             val (xA:Float , yA:Float) = event.findPointerIndex(activePointerIdA).let { pointerIndex ->
                 event.getX(pointerIndex) to event.getY(pointerIndex)
             }
-            Log.d("TAG-6","]]]]]]]]]] X = $xA")
-            Log.d("TAG-6","]]]]]]]]]] Y = $yA")
+            Log.d("TAG-6","xA = $xA")
+            Log.d("TAG-6","yA = $yA")
 
             if (event.pointerCount > 1) {
 
@@ -160,27 +181,73 @@ class MainActivity : AppCompatActivity() {
                 val (xB:Float , yB:Float) = event.findPointerIndex(activePointerIdB).let { pointerIndex ->
                     event.getX(pointerIndex) to event.getY(pointerIndex)
                 }
-                Log.d("TAG-6","[[[[[[[[[[]]]]]]]]]]]]]]]]]]]] X = $xB")
-                Log.d("TAG-6","{{{{{{{{{]]]]]]]]]]}}}}}}}}} Y = $yB")
+                Log.d("TAG-6","xB = $xB")
+                Log.d("TAG-6","yB = $yB")
 
-                if (xA > xB && yA > yB ){
-                    val scaleFactor = initalScaleFactor + .05f
-                    if (scaleFactor <= 3.4028235E38){
-                        v.scaleX =  scaleFactor
-                        v.scaleY =  scaleFactor
-                        initalScaleFactor = scaleFactor
+                if(event.action == MotionEvent.ACTION_MOVE ) {
 
+
+                    val xDifference = if (xA > xB) {
+                        xA - xB
+                    } else {
+                        xB - xA
                     }
-                }else{
-                    val scaleFactor = initalScaleFactor - .05f
-                    if (scaleFactor > 1.0){
-                        v.scaleX =  scaleFactor
-                        v.scaleY =  scaleFactor
-                        initalScaleFactor = scaleFactor
 
+                    val yDifference = if (yA > yB) {
+                        yA - yB
+                    } else {
+                        yB - yA
+                    }
+
+                    val a = xDifference.toInt()
+                    val b = yDifference.toInt()
+
+                    val cSqur = (a * a) + (b * b)
+                    val c = sqrt(cSqur.toDouble())
+
+                    if (initialC == null) {
+                        initialC = c
+                        Log.d("TAG_8", "initialC ========= $initialC")
+                    }
+
+                    Log.d("TAG_8", "c ========= $c")
+
+                    if (initialX == null && initialY == null) {
+                        initialX = xDifference + 50f
+                        initialY = yDifference + 50f
+                        Log.d("TAG-7", "initial  = $initialX")
+                    }
+
+
+                    Log.d("TAG-7", "xDifference  = ${xDifference}")
+                    Log.d("TAG-7", "yDifference = ${yDifference}")
+
+
+
+//                    if (xDifference > initialX!! && yDifference > initialY!!) {
+                    if (c > initialC!!) {
+                        val scaleFactor = initalScaleFactor + .10f
+
+                        if (scaleFactor <= 3.0F) {
+                            zoomView.scaleX = scaleFactor
+                            zoomView.scaleY = scaleFactor
+                            initalScaleFactor = scaleFactor
+
+                            Log.d("TAG-7", "scale up ==== $scaleFactor")
+
+
+                        }
+
+                    } else {
+                        val scaleFactor = initalScaleFactor - .10f
+                        if (scaleFactor > 1.0F) {
+                            zoomView.scaleX = scaleFactor
+                            zoomView.scaleY = scaleFactor
+                            initalScaleFactor = scaleFactor
+                            Log.d("TAG-7", "scale down ==== $scaleFactor")
+                        }
                     }
                 }
-
 
 
             } else {
@@ -188,10 +255,12 @@ class MainActivity : AppCompatActivity() {
                 Log.d("TAG", "Single touch event")
             }
 
+//            scaleDetector.onTouchEvent(event)
             true
         }
 
     }
+
 
     private var startPoint = 0.0f
     private var isMoving = false
@@ -251,6 +320,8 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+
     private fun isStoragePermissionGranted() =
             ContextCompat.checkSelfPermission(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -265,6 +336,7 @@ class MainActivity : AppCompatActivity() {
             zoomView.visibility = View.GONE
             zoomView.scaleX = 1f
             zoomView.scaleY = 1f
+            zoomViewHolder.visibility = View.GONE
         }else{
             super.onBackPressed()
         }

@@ -54,7 +54,7 @@ class ThumbnailAdapter(
 //                    Log.d("RV_TAG","")
                     onThumbnailMultiTouch(bmp)
                 } else {
-                    // Single touch event
+//                     Single touch event
 //                    onClickThumbnail(bmp)
                 }
 
