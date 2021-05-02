@@ -13,7 +13,6 @@
         android:id="@+id/listOfImages"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/row_item_image_list_item"
         tools:itemCount="4"
@@ -47,11 +46,16 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
+    <include
+        android:visibility="gone"
+        layout="@layout/row_item_image_list_item"
+        android:id="@+id/singleImage"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/zoomViewHolder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

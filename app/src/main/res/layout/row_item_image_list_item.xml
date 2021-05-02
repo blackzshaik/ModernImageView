@@ -7,12 +7,20 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/thumbnail"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="4:3"
+
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/std_8dp"
+        android:background="@color/white"
+        android:backgroundTint="@color/teal_200"
+        android:layout_marginBottom="@dimen/std_8dp"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
 
 
 
