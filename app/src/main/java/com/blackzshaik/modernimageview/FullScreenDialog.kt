@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.WindowManager
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlin.math.sqrt
@@ -25,8 +26,9 @@ class FullScreenDialog {
     }
 
     fun createDialog(context:Context):Dialog{
-        dialog = Dialog(context)
+        dialog = Dialog(context,R.style.full_screen_dialog)
         dialog.setContentView(R.layout.zoom_view_dialog)
+        dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.MATCH_PARENT)
 
 
         return dialog
@@ -38,12 +40,7 @@ class FullScreenDialog {
         zoomViewHolder.visibility = View.VISIBLE
         zoomView.visibility = View.VISIBLE
 
-        val bmpOptions = BitmapFactory.Options()
-        bmpOptions.inJustDecodeBounds = false
-        bmpOptions.outWidth = 128
-        bmpOptions.outHeight = 128
-        val bmp = BitmapFactory.decodeFile(zoomViewHolder?.tag as String?,bmpOptions )
-        zoomView.setImageBitmap(bmp)
+        zoomView.setImageBitmap((zoomViewHolder.tag as String).createBitmap())
 
         dialog.show()
 
@@ -71,23 +68,11 @@ class FullScreenDialog {
     val onMultiTouchListener = View.OnTouchListener { v, event ->
         Log.d("TAG_D1","---------------onMultiTouchListener")
 
-
-
-
-//            v.setOnTouchListener(null)
-
-
-
-
         if (event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_CANCEL){
             zoomView.scaleX = 1.0F
             zoomView.scaleY = 1.0F
             initialX = null
             initialY = null
-//
-//            Log.d("TAG_10","MotionEvent ACTION_UP --------")
-//
-//            return@OnTouchListener false
 
         }
 
@@ -155,7 +140,6 @@ class FullScreenDialog {
 
 
 
-//                    if (xDifference > initialX!! && yDifference > initialY!!) {
 
                 if (c > initialC!! ) {
 
@@ -192,7 +176,6 @@ class FullScreenDialog {
             Log.d("TAG", "Single touch event")
         }
 
-//            scaleDetector.onTouchEvent(event)
         true
     }
 }

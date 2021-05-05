@@ -72,8 +72,6 @@ class MainActivity : AppCompatActivity() {
 
     var imagePath = ""
     private fun storagePermissionGrantedAlready() {
-//        val storagePath = Environment.getExternalStoragePublicDirectory(DIRECTORY_DCIM)?.absolutePath
-//        Log.d("TAG1","00000000000000 - $storagePath")
 
         val file = File("/storage/emulated/0/DCIM/Screenshots")
         if (file.list() != null){
@@ -81,11 +79,6 @@ class MainActivity : AppCompatActivity() {
             setupThumbnailAdapter(file.list()!!)
         }
 
-
-
-//        val contextWrapper = ContextWrapper(this)
-//        val stPath = contextWrapper.getExternalFilesDir("DIRECTORY_DCIM")
-//        Log.d("TAG1","00000000000000 - $stPath")
     }
 
     private fun setupThumbnailAdapter(list: Array<String>) {
@@ -98,20 +91,8 @@ class MainActivity : AppCompatActivity() {
                     return true
                 }
             }
-
-
-
-
         }
-//        findViewById<ConstraintLayout>(R.id.singleImage).findViewById<ImageView>(R.id.thumbnail).apply {
-//            setOnTouchListener(onMultiTouchListener)
-//            val bmpOptions = BitmapFactory.Options()
-//            bmpOptions.inJustDecodeBounds = false
-//            bmpOptions.outWidth = 128
-//            bmpOptions.outHeight = 128
-//            val bmp = BitmapFactory.decodeFile(imagePath,bmpOptions )
-//            setImageBitmap(bmp)
-//        }
+
 
     }
 
@@ -123,8 +104,6 @@ class MainActivity : AppCompatActivity() {
             visibility = View.VISIBLE
             emptyView.visibility = View.VISIBLE
             setImageBitmap(bmp)
-//            setOnTouchListener(onTouchListener)
-//            movePointThreshold =
 
 
             val displayMetrics = DisplayMetrics()
@@ -140,39 +119,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             Log.d("TAG4","${this.layoutParams.height}")
-
-
-
-
-
-
-//            setOnDragListener { v, event ->
-//                Log.d("TAG2", "11111111 ${event.action}")
-//                when(event.action){
-//                    DragEvent.ACTION_DRAG_ENTERED ->{
-//                        this.animate().translationY(event.y)
-//                        true
-//                    }
-//                    else -> {
-//                        false
-//                    }
-//                }
-//
-//            }
-
         }
     }
 
-    var activePointerIdA = -1
-    var activePointerIdB = -1
-    var initalScaleFactor = 1.25f
-
-    var initialX:Float? = null
-    var initialY:Float? = null
-
-    var initialC: Double? = null
-
-    var scaleFactor = 0.25F
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -181,136 +130,6 @@ class MainActivity : AppCompatActivity() {
         zoomView.setImageBitmap(bmp)
         zoomView.visibility = View.VISIBLE
         zoomViewHolder.visibility = View.VISIBLE
-//        zoomViewHolder.setOnTouchListener { v, event ->
-////            if (event.pointerCount > 1) {
-////                val bmpOptions = BitmapFactory.Options()
-////                bmpOptions.inJustDecodeBounds = false
-////                bmpOptions.outWidth = 128
-////                bmpOptions.outHeight = 128
-////                val bmp = BitmapFactory.decodeFile(v?.tag as String?, bmpOptions)
-////                onThumbnailMultiTouch.invoke(bmp)
-////
-////            }
-//
-//
-//            if (event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_CANCEL) {
-//                zoomView.scaleX = 0.0F
-//                zoomView.scaleY = 0.0F
-//                initialX = null
-//                initialY = null
-//                zoomView.visibility = View.GONE
-//                zoomViewHolder.visibility = View.GONE
-//
-//
-////
-////            Log.d("TAG_10","MotionEvent ACTION_UP --------")
-////
-////            return@OnTouchListener false
-//
-//            }
-//
-//            activePointerIdA = event.getPointerId(0)
-//
-//
-//            val (xA: Float, yA: Float) = event.findPointerIndex(activePointerIdA)
-//                .let { pointerIndex ->
-//                    event.getX(pointerIndex) to event.getY(pointerIndex)
-//                }
-//            Log.d("TAG-6", "xA = $xA")
-//            Log.d("TAG-6", "yA = $yA")
-//
-//            if (event.pointerCount > 1) {
-//
-//                zoomView.pivotX = xA
-//                zoomView.pivotY = yA
-//                Log.d("TAG-6", "Multitouch event")
-//
-//                activePointerIdB = event.getPointerId(1)
-//
-//
-//                val (xB: Float, yB: Float) = event.findPointerIndex(activePointerIdB)
-//                    .let { pointerIndex ->
-//                        event.getX(pointerIndex) to event.getY(pointerIndex)
-//                    }
-//                Log.d("TAG-6", "xB = $xB")
-//                Log.d("TAG-6", "yB = $yB")
-//
-//                if (event.action == MotionEvent.ACTION_MOVE) {
-//
-//
-//                    val xDifference = if (xA > xB) {
-//                        xA - xB
-//                    } else {
-//                        xB - xA
-//                    }
-//
-//                    val yDifference = if (yA > yB) {
-//                        yA - yB
-//                    } else {
-//                        yB - yA
-//                    }
-//
-//                    val a = xDifference.toInt()
-//                    val b = yDifference.toInt()
-//
-//                    val cSqur = (a * a) + (b * b)
-//                    val c = sqrt(cSqur.toDouble())
-//
-//                    if (initialC == null) {
-//                        initialC = c + 50
-//                        Log.d("TAG_8", "initialC ========= $initialC")
-//                    }
-//
-//                    Log.d("TAG_8", "c ========= $c")
-//
-//                    if (initialX == null && initialY == null) {
-//                        initialX = xDifference + 50f
-//                        initialY = yDifference + 50f
-//                        Log.d("TAG-7", "initial  = $initialX")
-//                    }
-//
-//
-//                    Log.d("TAG-7", "xDifference  = ${xDifference}")
-//                    Log.d("TAG-7", "yDifference = ${yDifference}")
-//
-//
-////                    if (xDifference > initialX!! && yDifference > initialY!!) {
-//
-//                    if (c > initialC!!) {
-//
-//                        val scaleFactor = initalScaleFactor + .20f
-//
-//                        if (scaleFactor <= 3.0F && lastC != c) {
-//                            zoomView.scaleX = scaleFactor
-//                            zoomView.scaleY = scaleFactor
-//                            initalScaleFactor = scaleFactor
-//                            lastC = c
-//
-//                            Log.d("TAG-7", "scale up ==== $scaleFactor")
-//
-//
-//                        }
-//
-//                    } else {
-//                        val scaleFactor = initalScaleFactor - .20f
-//                        if (scaleFactor > 1.0F && lastC != c) {
-//                            zoomView.scaleX = scaleFactor
-//                            zoomView.scaleY = scaleFactor
-//                            initalScaleFactor = scaleFactor
-//                            lastC = c
-//                            Log.d("TAG-7", "scale down ==== $scaleFactor")
-//                        }
-//                    }
-//
-//
-//                }
-//
-//
-//            }
-//
-//
-//            return@setOnTouchListener true
-//        }
     }
 
     private val cameraDirectory = "/storage/emulated/0/DCIM/Screenshots"
@@ -322,12 +141,7 @@ class MainActivity : AppCompatActivity() {
     val onMultiTouchListener = View.OnTouchListener { v, event ->
         Log.d("TAG_12.1","ACTIVITY ========================== onMultiTouchListener")
         if (event.pointerCount >1){
-//            val bmpOptions = BitmapFactory.Options()
-//            bmpOptions.inJustDecodeBounds = false
-//            bmpOptions.outWidth = 128
-//            bmpOptions.outHeight = 128
-//            val bmp = BitmapFactory.decodeFile(v?.tag as String?,bmpOptions )
-//            onThumbnailMultiTouch.invoke(bmp)
+
             if (!recyclerView.isLayoutSuppressed){
                 recyclerView.suppressLayout(true)
 
@@ -339,137 +153,24 @@ class MainActivity : AppCompatActivity() {
 
             fullScreenDialog.zoomViewHolder.dispatchTouchEvent(event)
 
-
-
-//            v.setOnTouchListener(null)
-
+        }else{
+            val bmp = (v.tag as String).createBitmap()
+            if (bmp != null) {
+                onClickThumbnail(bmp)
+            }
         }
 
 
         if (event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_CANCEL){
-//            zoomView.scaleX = 0.0F
-//            zoomView.scaleY = 0.0F
-//            initialX = null
-//            initialY = null
-//            zoomView.visibility = View.GONE
-//            zoomViewHolder.visibility = View.GONE
+
             if (recyclerView.isLayoutSuppressed){
                 recyclerView.suppressLayout(false)
                 fullScreenDialog.dismissDialog()
                 Log.d("TAG_12","++++++++++++++++++++++++++++++after dismiss dialog")
             }
 
-
-
-//
-//            Log.d("TAG_10","MotionEvent ACTION_UP --------")
-//
-//            return@OnTouchListener false
-
         }
 
-//        activePointerIdA = event.getPointerId(0)
-//
-//
-//        val (xA:Float , yA:Float) = event.findPointerIndex(activePointerIdA).let { pointerIndex ->
-//            event.getX(pointerIndex) to event.getY(pointerIndex)
-//        }
-//        Log.d("TAG-6","xA = $xA")
-//        Log.d("TAG-6","yA = $yA")
-//
-//        if (event.pointerCount > 1) {
-//
-//            zoomView.pivotX = xA
-//            zoomView.pivotY = yA
-//            Log.d("TAG-6", "Multitouch event")
-//
-//            activePointerIdB = event.getPointerId(1)
-//
-//
-//            val (xB:Float , yB:Float) = event.findPointerIndex(activePointerIdB).let { pointerIndex ->
-//                event.getX(pointerIndex) to event.getY(pointerIndex)
-//            }
-//            Log.d("TAG-6","xB = $xB")
-//            Log.d("TAG-6","yB = $yB")
-//
-//            if(event.action == MotionEvent.ACTION_MOVE ) {
-//
-//
-//                val xDifference = if (xA > xB) {
-//                    xA - xB
-//                } else {
-//                    xB - xA
-//                }
-//
-//                val yDifference = if (yA > yB) {
-//                    yA - yB
-//                } else {
-//                    yB - yA
-//                }
-//
-//                val a = xDifference.toInt()
-//                val b = yDifference.toInt()
-//
-//                val cSqur = (a * a) + (b * b)
-//                val c = sqrt(cSqur.toDouble())
-//
-//                if (initialC == null) {
-//                    initialC = c + 50
-//                    Log.d("TAG_8", "initialC ========= $initialC")
-//                }
-//
-//                Log.d("TAG_8", "c ========= $c")
-//
-//                if (initialX == null && initialY == null) {
-//                    initialX = xDifference + 50f
-//                    initialY = yDifference + 50f
-//                    Log.d("TAG-7", "initial  = $initialX")
-//                }
-//
-//
-//                Log.d("TAG-7", "xDifference  = ${xDifference}")
-//                Log.d("TAG-7", "yDifference = ${yDifference}")
-//
-//
-//
-////                    if (xDifference > initialX!! && yDifference > initialY!!) {
-//
-//                    if (c > initialC!! ) {
-//
-//                        val scaleFactor = initalScaleFactor + .20f
-//
-//                        if (scaleFactor <= 3.0F &&  lastC != c) {
-//                            zoomView.scaleX = scaleFactor
-//                            zoomView.scaleY = scaleFactor
-//                            initalScaleFactor = scaleFactor
-//                            lastC = c
-//
-//                            Log.d("TAG-7", "scale up ==== $scaleFactor")
-//
-//
-//                        }
-//
-//                    } else {
-//                        val scaleFactor = initalScaleFactor - .20f
-//                        if (scaleFactor > 1.0F  && lastC != c) {
-//                            zoomView.scaleX = scaleFactor
-//                            zoomView.scaleY = scaleFactor
-//                            initalScaleFactor = scaleFactor
-//                            lastC = c
-//                            Log.d("TAG-7", "scale down ==== $scaleFactor")
-//                        }
-//                    }
-//
-//
-//            }
-//
-//
-//        } else {
-//            // Single touch event
-//            Log.d("TAG", "Single touch event")
-//        }
-
-//            scaleDetector.onTouchEvent(event)
         true
     }
 
@@ -492,7 +193,7 @@ class MainActivity : AppCompatActivity() {
         }
         MotionEvent.ACTION_UP -> {
             Log.d("TAG2"," ACTION_UP ======== Y ${event.y}")
-//            onBackPressed()
+
             false
         }
         MotionEvent.ACTION_MOVE ->{
@@ -504,18 +205,10 @@ class MainActivity : AppCompatActivity() {
                 val movePoint =  event.y - startPoint
                 Log.d("TAG3" , "$movePointThreshold ==== ${movePoint <=movePointThreshold } ${movePoint >= (movePointThreshold * -1)}")
                 if (movePoint <=movePointThreshold && movePoint >= (movePointThreshold * -1) ){
-//                    fullScreenImageView.animate().y(movePoint)
+
                     fullScreenImageView.y = movePoint
                 }
 
-//                if(event.y < startPoint){
-//                        Log.d("TAG2", " ACTION_DOWN ======== 1st block $movePoint")
-//                       fullScreenImageView.animate().yBy((event.y - startPoint))
-//
-//                }else{
-//                    fullScreenImageView.animate().yBy(event.y )
-//                    Log.d("TAG2"," ACTION_DOWN ======== 2nd block ${event.y - startPoint}")
-//                    }
 
 
                 }
